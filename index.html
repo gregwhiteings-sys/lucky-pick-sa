@@ -17,6 +17,48 @@
             padding: 20px;
             color: white;
         }
+
+        /* PASSWORD SCREEN */
+        #password-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+        }
+        #password-screen h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+        #password-screen input {
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            width: 250px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        #password-screen button {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #006633;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .error-msg {
+            color: #ff4444;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* MAIN CONTENT (Hidden until correct password) */
+        #main-content { display: none; }
+
         .container {
             max-width: 420px;
             margin: 0 auto;
@@ -82,23 +124,15 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: transform 0.15s;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
+        .btn:active { transform: scale(0.98); }
         .generate-btn {
             background: linear-gradient(135deg, #006633, #008f47);
             color: white;
             margin-bottom: 10px;
         }
-        .copy-btn {
-            background: #f0f0f0;
-            color: #333;
-        }
+        .copy-btn { background: #f0f0f0; color: #333; }
         .disclaimer {
             text-align: center;
             font-size: 12px;
@@ -120,54 +154,76 @@
 </head>
 <body>
 
-<div class="container">
-    <h1>🎱 Lucky Number Pick — SA</h1>
-    <p class="subtitle">Your Personal Lucky Number Generator 🍀</p>
+<!-- 🔐 PASSWORD SCREEN -->
+<div id="password-screen">
+    <h2>🔒 Enter Your Access Code</h2>
+    <input type="password" id="password-input" placeholder="Enter password...">
+    <br>
+    <button onclick="checkPassword()">UNLOCK ACCESS</button>
+    <p class="error-msg" id="wrong-pass">❌ Wrong password — try again!</p>
+</div>
 
-    <!-- POWERBALL -->
-    <div class="game-card">
-        <div class="game-title">🎱 POWERBALL</div>
-        <div class="balls" id="powerball-balls">
-            <span style="color:#999; font-size:16px;">Tap button below →</span>
+<!-- 🎱 MAIN GENERATOR (Hidden) -->
+<div id="main-content">
+    <div class="container">
+        <h1>🎱 Lucky Number Pick — SA</h1>
+        <p class="subtitle">Your Personal Lucky Number Generator 🍀</p>
+
+        <div class="game-card">
+            <div class="game-title">🎱 POWERBALL</div>
+            <div class="balls" id="powerball-balls">
+                <span style="color:#999; font-size:16px;">Tap button below →</span>
+            </div>
+            <button class="btn generate-btn" onclick="generatePowerball()">✨ GENERATE POWERBALL ✨</button>
+            <button class="btn copy-btn" onclick="copyText('powerball-balls-text')">📋 Copy Numbers</button>
+            <div class="copied-msg" id="powerball-copied">✅ Copied!</div>
+            <div id="powerball-balls-text" style="display:none;"></div>
         </div>
-        <button class="btn generate-btn" onclick="generatePowerball()">✨ GENERATE POWERBALL ✨</button>
-        <button class="btn copy-btn" onclick="copyText('powerball-balls-text')">📋 Copy Numbers</button>
-        <div class="copied-msg" id="powerball-copied">✅ Copied!</div>
-        <div id="powerball-balls-text" style="display:none;"></div>
-    </div>
 
-    <!-- LOTTO -->
-    <div class="game-card">
-        <div class="game-title">🎰 LOTTO</div>
-        <div class="balls" id="lotto-balls">
-            <span style="color:#999; font-size:16px;">Tap button below →</span>
+        <div class="game-card">
+            <div class="game-title">🎰 LOTTO</div>
+            <div class="balls" id="lotto-balls">
+                <span style="color:#999; font-size:16px;">Tap button below →</span>
+            </div>
+            <button class="btn generate-btn" onclick="generateLotto()">✨ GENERATE LOTTO ✨</button>
+            <button class="btn copy-btn" onclick="copyText('lotto-balls-text')">📋 Copy Numbers</button>
+            <div class="copied-msg" id="lotto-copied">✅ Copied!</div>
+            <div id="lotto-balls-text" style="display:none;"></div>
         </div>
-        <button class="btn generate-btn" onclick="generateLotto()">✨ GENERATE LOTTO ✨</button>
-        <button class="btn copy-btn" onclick="copyText('lotto-balls-text')">📋 Copy Numbers</button>
-        <div class="copied-msg" id="lotto-copied">✅ Copied!</div>
-        <div id="lotto-balls-text" style="display:none;"></div>
-    </div>
 
-    <!-- PICK 6 -->
-    <div class="game-card">
-        <div class="game-title">🔢 PICK 6</div>
-        <div class="balls" id="pick6-balls">
-            <span style="color:#999; font-size:16px;">Tap button below →</span>
+        <div class="game-card">
+            <div class="game-title">🔢 PICK 6</div>
+            <div class="balls" id="pick6-balls">
+                <span style="color:#999; font-size:16px;">Tap button below →</span>
+            </div>
+            <button class="btn generate-btn" onclick="generatePick6()">✨ GENERATE PICK 6 ✨</button>
+            <button class="btn copy-btn" onclick="copyText('pick6-balls-text')">📋 Copy Numbers</button>
+            <div class="copied-msg" id="pick6-copied">✅ Copied!</div>
+            <div id="pick6-balls-text" style="display:none;"></div>
         </div>
-        <button class="btn generate-btn" onclick="generatePick6()">✨ GENERATE PICK 6 ✨</button>
-        <button class="btn copy-btn" onclick="copyText('pick6-balls-text')">📋 Copy Numbers</button>
-        <div class="copied-msg" id="pick6-copied">✅ Copied!</div>
-        <div id="pick6-balls-text" style="display:none;"></div>
-    </div>
 
-    <div class="disclaimer">
-        ⚠️ For entertainment purposes only.<br>
-        Not affiliated with the South African National Lottery.<br>
-        Winning is not guaranteed. Play responsibly.
+        <div class="disclaimer">
+            ⚠️ For entertainment purposes only.<br>
+            Not affiliated with the South African National Lottery.<br>
+            Winning is not guaranteed. Play responsibly.
+        </div>
     </div>
 </div>
 
 <script>
+// 🔐 YOUR PASSWORD — CHANGE THIS TO ANYTHING YOU WANT!
+const CORRECT_PASSWORD = "lucky2026";  // ← EDIT PASSWORD HERE
+
+function checkPassword() {
+    let entered = document.getElementById("password-input").value;
+    if (entered === CORRECT_PASSWORD) {
+        document.getElementById("password-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+    } else {
+        document.getElementById("wrong-pass").style.display = "block";
+    }
+}
+
 // Helper: Get unique random numbers
 function getUniqueNumbers(count, min, max) {
     let nums = [];
@@ -184,19 +240,16 @@ function generatePowerball() {
     let pb = getUniqueNumbers(1, 1, 20);
     let container = document.getElementById('powerball-balls');
     container.innerHTML = '';
-    
     main.forEach(n => {
         let ball = document.createElement('div');
         ball.className = 'ball';
         ball.textContent = n;
         container.appendChild(ball);
     });
-    
     let pbBall = document.createElement('div');
     pbBall.className = 'ball powerball-ball';
     pbBall.textContent = pb[0];
     container.appendChild(pbBall);
-    
     document.getElementById('powerball-balls-text').value = 'Powerball: ' + main.join(', ') + ' | Powerball: ' + pb[0];
 }
 
@@ -205,14 +258,12 @@ function generateLotto() {
     let nums = getUniqueNumbers(6, 1, 52);
     let container = document.getElementById('lotto-balls');
     container.innerHTML = '';
-    
     nums.forEach(n => {
         let ball = document.createElement('div');
         ball.className = 'ball';
         ball.textContent = n;
         container.appendChild(ball);
     });
-    
     document.getElementById('lotto-balls-text').value = 'Lotto: ' + nums.join(', ');
 }
 
@@ -221,14 +272,12 @@ function generatePick6() {
     let nums = getUniqueNumbers(6, 1, 49);
     let container = document.getElementById('pick6-balls');
     container.innerHTML = '';
-    
     nums.forEach(n => {
         let ball = document.createElement('div');
         ball.className = 'ball';
         ball.textContent = n;
         container.appendChild(ball);
     });
-    
     document.getElementById('pick6-balls-text').value = 'Pick 6: ' + nums.join(', ');
 }
 
@@ -237,9 +286,8 @@ function copyText(elementId) {
     let text = document.getElementById(elementId).value;
     navigator.clipboard.writeText(text).then(() => {
         let copiedId = elementId.replace('-text', '-copied');
-        let msg = document.getElementById(copiedId);
-        msg.style.display = 'block';
-        setTimeout(() => msg.style.display = 'none', 2000);
+        document.getElementById(copiedId).style.display = 'block';
+        setTimeout(() => document.getElementById(copiedId).style.display = 'none', 2000);
     });
 }
 </script>
